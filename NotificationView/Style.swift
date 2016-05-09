@@ -6,24 +6,24 @@
 //  Copyright © 2016年 Teambition. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public enum NotificationViewStyle {
     case Simple
     case Success
     case Error
-    case Info
+    case Message
     case Warning
 }
 
 public enum NotificationViewPosition {
     case Top
     case Bottom
-    case NavBarOverlay
+    case NavBar(UINavigationController)
 }
 
 public enum NotificationViewAccessoryType {
     case None
-    case DisclosureIndicator
-    case Button(String)
+    case DisclosureIndicator(() -> Void)
+    case Button(UIButton)
 }
