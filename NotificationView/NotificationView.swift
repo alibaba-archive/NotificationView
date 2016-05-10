@@ -40,12 +40,7 @@ public class NotificationView: UIView {
     public private(set) var style: NotificationViewStyle!
     public private(set) var title: String?
     public private(set) var subtitle: String?
-    /// The type of standard accessory view the notification should use.
     public private(set) var accessoryType: NotificationViewAccessoryType = .None
-    /// A view that is used, typically as a control, on the right side of the notification.
-    ///
-    /// If the value of this property is not nil, the NotificationView uses the given view for the accessory view in the right side of notification; it ignores the value of the accessoryType property.
-    public private(set) var accessoryView: UIView?
 
     private var dismissTimer: NSTimer?
     private var verticalConstraints = [NSLayoutConstraint]()
@@ -87,15 +82,13 @@ public class NotificationView: UIView {
                             style: NotificationViewStyle,
                             title: String?,
                             subtitle: String?,
-                            accessoryType: NotificationViewAccessoryType = .None,
-                            accessoryView: UIView? = nil) {
+                            accessoryType: NotificationViewAccessoryType = .None) {
         self.init(frame: CGRect.zero)
         self.position = position
         self.style = style
         self.title = title
         self.subtitle = subtitle
         self.accessoryType = accessoryType
-        self.accessoryView = accessoryView
         
         configureNotification()
         configureGestureRecognizer()
@@ -153,46 +146,40 @@ extension NotificationView {
             addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
         }
 
-        var rightAccessoryView: UIView?
-        if let accessoryView = accessoryView {
-            rightAccessoryView = accessoryView
-            accessoryView.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(accessoryView)
-        } else {
-            switch accessoryType {
-            case .None:
-                break
-            case .DisclosureIndicator(let action):
-                tapAction = #selector(notificationViewDisclosureIndicatorTapped)
-                let disclosureIndicator = UIImage(named: "disclosureIndicator", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil)
-                let imageView = UIImageView(image: disclosureIndicator)
-                rightAccessoryView = imageView
-                imageView.translatesAutoresizingMaskIntoConstraints = false
-                addSubview(imageView)
-            case .Button(let button):
-                rightAccessoryView = button
-                button.translatesAutoresizingMaskIntoConstraints = false
-                addSubview(button)
-            }
+        var accessoryView: UIView?
+        switch accessoryType {
+        case .None:
+            break
+        case .DisclosureIndicator(let action):
+            tapAction = #selector(notificationViewDisclosureIndicatorTapped)
+            let disclosureIndicator = UIImage(named: "disclosureIndicator", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil)
+            let imageView = UIImageView(image: disclosureIndicator)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(imageView)
+            accessoryView = imageView
+        case .Custom(let view):
+            view.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(view)
+            accessoryView = view
         }
 
-        if let rightAccessoryView = rightAccessoryView {
-            addConstraint(NSLayoutConstraint(item: rightAccessoryView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: rightAccessoryView.frame.width))
-            addConstraint(NSLayoutConstraint(item: rightAccessoryView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: rightAccessoryView.frame.height))
-            addConstraint(NSLayoutConstraint(item: rightAccessoryView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
+        if let accessoryView = accessoryView {
+            addConstraint(NSLayoutConstraint(item: accessoryView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: accessoryView.frame.width))
+            addConstraint(NSLayoutConstraint(item: accessoryView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: accessoryView.frame.height))
+            addConstraint(NSLayoutConstraint(item: accessoryView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
         }
 
         var views: [String: AnyObject] = ["titleLabel": titleLabel]
         var horizontalFormat = String()
         let labelLeftPadding = icon != nil ? NotificationLayout.labelHorizontalPadding : NotificationLayout.iconLeading
-        let labelRightPadding = rightAccessoryView != nil ? NotificationLayout.labelHorizontalPadding : NotificationLayout.accessoryViewTrailing
+        let labelRightPadding = accessoryView != nil ? NotificationLayout.labelHorizontalPadding : NotificationLayout.accessoryViewTrailing
 
         if let _ = icon {
             horizontalFormat += "\(NotificationLayout.iconLeading)-[iconImageView]-"
             views.updateValue(iconImageView, forKey: "iconImageView")
         }
         horizontalFormat += "\(labelLeftPadding)-[titleLabel]-\(labelRightPadding)"
-        if let rightAccessoryView = rightAccessoryView {
+        if let rightAccessoryView = accessoryView {
             horizontalFormat += "-[rightAccessoryView]-\(NotificationLayout.accessoryViewTrailing)"
             views.updateValue(rightAccessoryView, forKey: "rightAccessoryView")
         }

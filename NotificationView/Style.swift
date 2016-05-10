@@ -25,5 +25,5 @@ public enum NotificationViewPosition {
 public enum NotificationViewAccessoryType {
     case None
     case DisclosureIndicator(() -> Void)
-    case Button(UIButton)
+    case Custom(UIView)
 }

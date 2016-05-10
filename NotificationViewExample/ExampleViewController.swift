@@ -11,7 +11,7 @@ import NotificationView
 
 private let kNotificationViewExampleCellID = "NotificationViewExampleCell"
 private let kNotificationViewStyles: [NotificationViewStyle] = [.Success, .Error, .Message, .Warning, .Custom(UIImage(named: "customIcon"))]
-private let kNotificationViewStyleStrings = ["Success", "Error", "Message", "Warning", "Custom"]
+private let kNotificationViewStyleStrings = ["Success", "Error", "Message", "Warning", "Custom Icon"]
 private let kNotificationViewPositionStrings = ["Top", "Bottom", "NavBar"]
 private let kNotificationViewAccessoryTypeStrings = ["None", "Disclosure Indicator", "Button", "Custom Accessory View"]
 
@@ -21,7 +21,6 @@ class ExampleViewController: UIViewController {
     private var style: NotificationViewStyle = .Success
     private var position: NotificationViewPosition = .Top
     private var accessoryType: NotificationViewAccessoryType = .None
-    private var accessoryView: UIView?
     private var styleIndexPath = NSIndexPath(forRow: 0, inSection: 0)
     private var positionIndexPath = NSIndexPath(forRow: 0, inSection: 1)
     private var accessoryIndexPath = NSIndexPath(forRow: 0, inSection: 2)
@@ -50,8 +49,7 @@ class ExampleViewController: UIViewController {
                                           style: style,
                                           title: title,
                                           subtitle: subtitle,
-                                          accessoryType: accessoryType,
-                                          accessoryView: accessoryView)
+                                          accessoryType: accessoryType)
     }
 
     func doneButtonTapped(sender: UIButton) {
@@ -82,7 +80,7 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
         switch section {
         case 0: return "Style"
         case 1: return "Position"
-        case 2: return "Accessory Type"
+        case 2: return "Accessory"
         default: return nil
         }
     }
@@ -145,7 +143,6 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
             switch indexPath.row {
             case 0:
                 accessoryType = .None
-                accessoryView = nil
             case 1:
                 accessoryType = .DisclosureIndicator({
                     let alert = UIAlertController(title: "Disclosure Indicator", message: nil, preferredStyle: .Alert)
@@ -153,7 +150,6 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
                     alert.addAction(cancelAction)
                     self.presentViewController(alert, animated: true, completion: nil)
                 })
-                accessoryView = nil
             case 2:
                 let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 90, height: 35)))
                 button.layer.cornerRadius = 6
@@ -162,20 +158,17 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
                 button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 button.addTarget(self, action: #selector(doneButtonTapped(_:)), forControlEvents: .TouchUpInside)
                 button.titleLabel?.font = UIFont.systemFontOfSize(16)
-                accessoryType = .Button(button)
-                accessoryView = nil
+                accessoryType = .Custom(button)
             case 3:
-                accessoryView = {
-                    let accessoryView = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 130, height: 35)))
-                    accessoryView.backgroundColor = UIColor.cyanColor()
-                    accessoryView.layer.cornerRadius = 7
-                    accessoryView.clipsToBounds = true
-                    accessoryView.text = "Accessory View"
-                    accessoryView.textColor = UIColor.whiteColor()
-                    accessoryView.font = UIFont.systemFontOfSize(15)
-                    accessoryView.textAlignment = .Center
-                    return accessoryView
-                }()
+                let accessoryView = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 130, height: 35)))
+                accessoryView.backgroundColor = UIColor.cyanColor()
+                accessoryView.layer.cornerRadius = 7
+                accessoryView.clipsToBounds = true
+                accessoryView.text = "Accessory View"
+                accessoryView.textColor = UIColor.redColor()
+                accessoryView.font = UIFont.systemFontOfSize(15)
+                accessoryView.textAlignment = .Center
+                accessoryType = .Custom(accessoryView)
             default:
                 break
             }
