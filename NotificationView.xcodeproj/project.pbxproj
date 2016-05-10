@@ -10,6 +10,7 @@
 		D31E1DC41CDF55DD000E5369 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31E1DC31CDF55DD000E5369 /* NotificationView.swift */; };
 		D3A487FE1CDF910C0005BA2F /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A487FD1CDF910C0005BA2F /* Style.swift */; };
 		D3A488001CDF9DFC0005BA2F /* Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A487FF1CDF9DFC0005BA2F /* Delegate.swift */; };
+		D3AF1B501CE1B1B400B9527F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AF1B4F1CE1B1B400B9527F /* Notification.swift */; };
 		D3D2C3121CE036CD0005BEF8 /* NotificationView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3D2C3111CE036CD0005BEF8 /* NotificationView.xcassets */; };
 		D3D2C3141CE039F80005BEF8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2C3131CE039F70005BEF8 /* Constants.swift */; };
 		D3D2C3161CE0618B0005BEF8 /* UIWindow+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2C3151CE0618B0005BEF8 /* UIWindow+Notification.swift */; };
@@ -21,6 +22,7 @@
 		D31E1DC61CDF5613000E5369 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "NotificationView/Supporting Files/Info.plist"; sourceTree = "<group>"; };
 		D3A487FD1CDF910C0005BA2F /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		D3A487FF1CDF9DFC0005BA2F /* Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delegate.swift; sourceTree = "<group>"; };
+		D3AF1B4F1CE1B1B400B9527F /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D3D2C3111CE036CD0005BEF8 /* NotificationView.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = NotificationView.xcassets; path = NotificationView/Resources/NotificationView.xcassets; sourceTree = "<group>"; };
 		D3D2C3131CE039F70005BEF8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D3D2C3151CE0618B0005BEF8 /* UIWindow+Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIWindow+Notification.swift"; sourceTree = "<group>"; };
@@ -58,10 +60,11 @@
 		D31E1DBA1CDF5541000E5369 /* NotificationView */ = {
 			isa = PBXGroup;
 			children = (
+				D3AF1B4F1CE1B1B400B9527F /* Notification.swift */,
 				D3A487FD1CDF910C0005BA2F /* Style.swift */,
 				D3A487FF1CDF9DFC0005BA2F /* Delegate.swift */,
-				D31E1DC31CDF55DD000E5369 /* NotificationView.swift */,
 				D3D2C3131CE039F70005BEF8 /* Constants.swift */,
+				D31E1DC31CDF55DD000E5369 /* NotificationView.swift */,
 				D3D2C3151CE0618B0005BEF8 /* UIWindow+Notification.swift */,
 			);
 			path = NotificationView;
@@ -163,6 +166,7 @@
 			files = (
 				D31E1DC41CDF55DD000E5369 /* NotificationView.swift in Sources */,
 				D3D2C3161CE0618B0005BEF8 /* UIWindow+Notification.swift in Sources */,
+				D3AF1B501CE1B1B400B9527F /* Notification.swift in Sources */,
 				D3A488001CDF9DFC0005BA2F /* Delegate.swift in Sources */,
 				D3A487FE1CDF910C0005BA2F /* Style.swift in Sources */,
 				D3D2C3141CE039F80005BEF8 /* Constants.swift in Sources */,

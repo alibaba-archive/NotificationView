@@ -9,11 +9,11 @@
 import UIKit
 
 public enum NotificationViewStyle {
-    case Simple
     case Success
     case Error
     case Message
     case Warning
+    case Custom(UIImage?)
 }
 
 public enum NotificationViewPosition {

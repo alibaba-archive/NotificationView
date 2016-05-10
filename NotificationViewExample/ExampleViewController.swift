@@ -10,17 +10,21 @@ import UIKit
 import NotificationView
 
 private let kNotificationViewExampleCellID = "NotificationViewExampleCell"
-private let kNotificationViewStyles: [NotificationViewStyle] = [.Simple, .Success, .Error, .Message, .Warning]
-private let kNotificationViewStyleStrings = ["Simple", "Success", "Error", "Message", "Warning"]
+private let kNotificationViewStyles: [NotificationViewStyle] = [.Success, .Error, .Message, .Warning, .Custom(UIImage(named: "customIcon"))]
+private let kNotificationViewStyleStrings = ["Success", "Error", "Message", "Warning", "Custom"]
 private let kNotificationViewPositionStrings = ["Top", "Bottom", "NavBar"]
-private let kNotificationViewAccessoryTypeStrings = ["None", "DisclosureIndicator", "Button"]
+private let kNotificationViewAccessoryTypeStrings = ["None", "Disclosure Indicator", "Button", "Custom Accessory View"]
 
 class ExampleViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     private var style: NotificationViewStyle = .Success
-    private var position: NotificationViewPosition = .Bottom
+    private var position: NotificationViewPosition = .Top
     private var accessoryType: NotificationViewAccessoryType = .None
+    private var accessoryView: UIView?
+    private var styleIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+    private var positionIndexPath = NSIndexPath(forRow: 0, inSection: 1)
+    private var accessoryIndexPath = NSIndexPath(forRow: 0, inSection: 2)
     private var notificationCount = 0
 
     // MARK: - Life cycle
@@ -32,20 +36,29 @@ class ExampleViewController: UIViewController {
     // MARK: - Helper
     private func setupUI() {
         automaticallyAdjustsScrollViewInsets = false
-        navigationItem.title = "NotificationView"
+        navigationItem.title = "NotificationView Example"
+        tableView.tintColor = UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)
         tableView.tableFooterView = UIView()
     }
 
     // MARK: - Actions
     @IBAction func showNotificationButtonTapped(sender: UIButton) {
         notificationCount += 1
-        let notificationView = NotificationView(position: position,
-                                                style: style,
-                                                title: "Show notification \(notificationCount) successfully!",
-                                                subtitle: "You can tap the notification to dismiss.",
-                                                accessoryType: accessoryType,
-                                                accessoryView: nil)
-        notificationView.show()
+        let title = "Show notification \(notificationCount) successfully! You can tap the notification to dismiss."
+        let subtitle = "You can tap the notification to dismiss."
+        NotificationView.showNotification(position,
+                                          style: style,
+                                          title: title,
+                                          subtitle: subtitle,
+                                          accessoryType: accessoryType,
+                                          accessoryView: accessoryView)
+    }
+
+    func doneButtonTapped(sender: UIButton) {
+        let alert = UIAlertController(title: "Done button tapped!", message: nil, preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+        alert.addAction(cancelAction)
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 }
 
@@ -80,9 +93,15 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
             cell = UITableViewCell(style: .Default, reuseIdentifier: kNotificationViewExampleCellID)
         }
         switch indexPath.section {
-        case 0: cell?.textLabel?.text = kNotificationViewStyleStrings[indexPath.row]
-        case 1: cell?.textLabel?.text = kNotificationViewPositionStrings[indexPath.row]
-        case 2: cell?.textLabel?.text = kNotificationViewAccessoryTypeStrings[indexPath.row]
+        case 0:
+            cell?.accessoryType = indexPath == styleIndexPath ? .Checkmark : .None
+            cell?.textLabel?.text = kNotificationViewStyleStrings[indexPath.row]
+        case 1:
+            cell?.accessoryType = indexPath == positionIndexPath ? .Checkmark : .None
+            cell?.textLabel?.text = kNotificationViewPositionStrings[indexPath.row]
+        case 2:
+            cell?.accessoryType = indexPath == accessoryIndexPath ? .Checkmark : .None
+            cell?.textLabel?.text = kNotificationViewAccessoryTypeStrings[indexPath.row]
         default: break
         }
         return cell!
@@ -90,5 +109,81 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        switch indexPath.section {
+        case 0:
+            if styleIndexPath == indexPath {
+                return
+            }
+
+            style = kNotificationViewStyles[indexPath.row]
+            tableView.cellForRowAtIndexPath(styleIndexPath)?.accessoryType = .None
+            styleIndexPath = indexPath
+            tableView.cellForRowAtIndexPath(styleIndexPath)?.accessoryType = .Checkmark
+        case 1:
+            if positionIndexPath == indexPath {
+                return
+            }
+
+            switch indexPath.row {
+            case 0:
+                position = .Top
+            case 1:
+                position = .Bottom
+            case 2:
+                position = .NavBar(navigationController!)
+            default:
+                break
+            }
+            tableView.cellForRowAtIndexPath(positionIndexPath)?.accessoryType = .None
+            positionIndexPath = indexPath
+            tableView.cellForRowAtIndexPath(positionIndexPath)?.accessoryType = .Checkmark
+        case 2:
+            if accessoryIndexPath == indexPath {
+                return
+            }
+
+            switch indexPath.row {
+            case 0:
+                accessoryType = .None
+                accessoryView = nil
+            case 1:
+                accessoryType = .DisclosureIndicator({
+                    let alert = UIAlertController(title: "Disclosure Indicator", message: nil, preferredStyle: .Alert)
+                    let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+                    alert.addAction(cancelAction)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
+                accessoryView = nil
+            case 2:
+                let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 90, height: 35)))
+                button.layer.cornerRadius = 6
+                button.backgroundColor = UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)
+                button.setTitle("Done", forState: .Normal)
+                button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                button.addTarget(self, action: #selector(doneButtonTapped(_:)), forControlEvents: .TouchUpInside)
+                button.titleLabel?.font = UIFont.systemFontOfSize(16)
+                accessoryType = .Button(button)
+                accessoryView = nil
+            case 3:
+                accessoryView = {
+                    let accessoryView = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 130, height: 35)))
+                    accessoryView.backgroundColor = UIColor.cyanColor()
+                    accessoryView.layer.cornerRadius = 7
+                    accessoryView.clipsToBounds = true
+                    accessoryView.text = "Accessory View"
+                    accessoryView.textColor = UIColor.whiteColor()
+                    accessoryView.font = UIFont.systemFontOfSize(15)
+                    accessoryView.textAlignment = .Center
+                    return accessoryView
+                }()
+            default:
+                break
+            }
+            tableView.cellForRowAtIndexPath(accessoryIndexPath)?.accessoryType = .None
+            accessoryIndexPath = indexPath
+            tableView.cellForRowAtIndexPath(accessoryIndexPath)?.accessoryType = .Checkmark
+        default:
+            break
+        }
     }
 }

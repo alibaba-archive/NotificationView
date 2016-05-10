@@ -8,6 +8,8 @@
 
 import UIKit
 
+internal let UILayoutPriorityNotificationPadding: Float = 999
+
 internal struct Notification {
     static let cornerRadius: CGFloat = 4
     static let shadowColor = UIColor.blackColor().CGColor
@@ -16,16 +18,13 @@ internal struct Notification {
     static let shadowRadius: CGFloat = 6
 
     static let titleFont = UIFont.systemFontOfSize(16)
-    static let simpleTitleFont = UIFont.systemFontOfSize(14)
-
     static let subtitleFont = UIFont.systemFontOfSize(12)
 }
 
 internal struct NotificationLayout {
     static let notificationSpacing: CGFloat = 10
-    static let notificationMaxWidth: CGFloat = 500
     static let notificationHeight: CGFloat = 60
-    static let simpleNotificationHeight: CGFloat = 33
+    static let notificationMaxWidth: CGFloat = 500
 
     static let iconSize = CGSize(width: 36, height: 36)
     static let iconLeading: CGFloat = 15

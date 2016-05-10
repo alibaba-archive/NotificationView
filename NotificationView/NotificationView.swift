@@ -33,7 +33,7 @@ public class NotificationView: UIView {
             subtitleLabel.textColor = subtitleTextColor
         }
     }
-    public var duration: NSTimeInterval = 3
+    public var duration: NSTimeInterval = 2.5
 
     public private(set) var isAnimating = false
     public private(set) var position: NotificationViewPosition!
@@ -49,6 +49,7 @@ public class NotificationView: UIView {
 
     private var dismissTimer: NSTimer?
     private var verticalConstraints = [NSLayoutConstraint]()
+    private var tapAction = #selector(NotificationView.notificationViewTapped)
     private lazy var iconImageView: UIImageView = {
         let iconImageView = UIImageView()
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,8 +73,8 @@ public class NotificationView: UIView {
         subtitleLabel.textColor = self.subtitleTextColor
         return subtitleLabel
     }()
-    private lazy var tapAction = #selector(NotificationView.notificationViewTapped)
 
+    // MARK: - Initialization
     public override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -81,14 +82,11 @@ public class NotificationView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-}
 
-public extension NotificationView {
-    // MARK: - Initialization
-    public convenience init(position: NotificationViewPosition = .Top,
+    public convenience init(position: NotificationViewPosition,
                             style: NotificationViewStyle,
                             title: String?,
-                            subtitle: String? = nil,
+                            subtitle: String?,
                             accessoryType: NotificationViewAccessoryType = .None,
                             accessoryView: UIView? = nil) {
         self.init(frame: CGRect.zero)
@@ -98,63 +96,61 @@ public extension NotificationView {
         self.subtitle = subtitle
         self.accessoryType = accessoryType
         self.accessoryView = accessoryView
-
+        
         configureNotification()
         configureGestureRecognizer()
     }
+}
 
+extension NotificationView {
     // MARK: - Helper
     private func configureNotification() {
         translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = UIColor(white: 0, alpha: 0.85)
+        layer.cornerRadius = Notification.cornerRadius
+        clipsToBounds = false
+        layer.shadowColor = Notification.shadowColor
+        layer.shadowOffset = Notification.shadowOffset
+        layer.shadowOpacity = Notification.shadowOpacity
+        layer.shadowRadius = Notification.shadowRadius
 
-        switch style! {
-        case .Simple:
-            titleLabel.font = Notification.simpleTitleFont
-            titleLabel.textColor = UIColor.whiteColor()
-            titleLabel.textAlignment = .Center
-            titleLabel.text = title
-
-            addSubview(titleLabel)
-            addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
-            addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[titleLabel]|", options: [], metrics: nil, views: ["titleLabel": titleLabel]))
-        default:
-            backgroundColor = UIColor(white: 0, alpha: 0.85)
-            layer.cornerRadius = Notification.cornerRadius
-            clipsToBounds = false
-            layer.shadowColor = Notification.shadowColor
-            layer.shadowOffset = Notification.shadowOffset
-            layer.shadowOpacity = Notification.shadowOpacity
-            layer.shadowRadius = Notification.shadowRadius
-
-            let iconName: String = {
+        let icon: UIImage? = {
+            switch style! {
+            case .Custom(let icon):
+                return icon
+            default:
+                var iconName: String
                 switch style! {
-                case .Success: return "successIcon"
-                case .Error: return "errorIcon"
-                case .Warning: return "warningIcon"
-                default: return "messageIcon"
+                case .Success: iconName = "successIcon"
+                case .Error: iconName = "errorIcon"
+                case .Warning: iconName = "warningIcon"
+                default: iconName = "messageIcon"
                 }
-            }()
-            let icon = UIImage(named: iconName, inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil)
+                return UIImage(named: iconName, inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil)
+            }
+        }()
+
+        if let icon = icon {
             iconImageView.image = icon
 
             addSubview(iconImageView)
             addConstraint(NSLayoutConstraint(item: iconImageView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: NotificationLayout.iconSize.width))
             addConstraint(NSLayoutConstraint(item: iconImageView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: NotificationLayout.iconSize.height))
             addConstraint(NSLayoutConstraint(item: iconImageView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
+        }
 
-            titleLabel.text = title
-            addSubview(titleLabel)
-            if let subtitle = subtitle {
-                subtitleLabel.text = subtitle
-                addSubview(subtitleLabel)
+        titleLabel.text = title
+        addSubview(titleLabel)
+        if let subtitle = subtitle {
+            subtitleLabel.text = subtitle
+            addSubview(subtitleLabel)
 
-                addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1, constant: NotificationLayout.labelVerticalPadding))
-                addConstraint(NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: subtitleLabel, attribute: .Bottom, multiplier: 1, constant: NotificationLayout.labelVerticalPadding))
-                addConstraint(NSLayoutConstraint(item: subtitleLabel, attribute: .Leading, relatedBy: .Equal, toItem: titleLabel, attribute: .Leading, multiplier: 1, constant: 0))
-                addConstraint(NSLayoutConstraint(item: subtitleLabel, attribute: .Trailing, relatedBy: .Equal, toItem: titleLabel, attribute: .Trailing, multiplier: 1, constant: 0))
-            } else {
-                addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
-            }
+            addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1, constant: NotificationLayout.labelVerticalPadding))
+            addConstraint(NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: subtitleLabel, attribute: .Bottom, multiplier: 1, constant: NotificationLayout.labelVerticalPadding))
+            addConstraint(NSLayoutConstraint(item: subtitleLabel, attribute: .Leading, relatedBy: .Equal, toItem: titleLabel, attribute: .Leading, multiplier: 1, constant: 0))
+            addConstraint(NSLayoutConstraint(item: subtitleLabel, attribute: .Trailing, relatedBy: .Equal, toItem: titleLabel, attribute: .Trailing, multiplier: 1, constant: 0))
+        } else {
+            addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
         }
 
         var rightAccessoryView: UIView?
@@ -184,17 +180,23 @@ public extension NotificationView {
             addConstraint(NSLayoutConstraint(item: rightAccessoryView, attribute: .Width, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: rightAccessoryView.frame.width))
             addConstraint(NSLayoutConstraint(item: rightAccessoryView, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: rightAccessoryView.frame.height))
             addConstraint(NSLayoutConstraint(item: rightAccessoryView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1, constant: 0))
-
-            let visualFormat = "H:|-\(NotificationLayout.iconLeading)-[iconImageView]-\(NotificationLayout.labelHorizontalPadding)-[titleLabel]-\(NotificationLayout.labelHorizontalPadding)-[rightAccessoryView]-\(NotificationLayout.accessoryViewTrailing)-|"
-            let views = ["iconImageView": iconImageView, "titleLabel": titleLabel, "rightAccessoryView": rightAccessoryView]
-            addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(visualFormat, options: [], metrics: nil, views: views))
-        } else {
-            let visualFormat = "H:|-\(NotificationLayout.iconLeading)-[iconImageView]-\(NotificationLayout.labelHorizontalPadding)-[titleLabel]-\(NotificationLayout.labelHorizontalPadding)-|"
-            let views = ["iconImageView": iconImageView, "titleLabel": titleLabel]
-            addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(visualFormat, options: [], metrics: nil, views: views))
         }
 
-        layoutIfNeeded()
+        var views: [String: AnyObject] = ["titleLabel": titleLabel]
+        var horizontalFormat = String()
+        let labelLeftPadding = icon != nil ? NotificationLayout.labelHorizontalPadding : NotificationLayout.iconLeading
+        let labelRightPadding = rightAccessoryView != nil ? NotificationLayout.labelHorizontalPadding : NotificationLayout.accessoryViewTrailing
+
+        if let _ = icon {
+            horizontalFormat += "\(NotificationLayout.iconLeading)-[iconImageView]-"
+            views.updateValue(iconImageView, forKey: "iconImageView")
+        }
+        horizontalFormat += "\(labelLeftPadding)-[titleLabel]-\(labelRightPadding)"
+        if let rightAccessoryView = rightAccessoryView {
+            horizontalFormat += "-[rightAccessoryView]-\(NotificationLayout.accessoryViewTrailing)"
+            views.updateValue(rightAccessoryView, forKey: "rightAccessoryView")
+        }
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-\(horizontalFormat)-|", options: [], metrics: nil, views: views))
     }
 
     private func configureGestureRecognizer() {
@@ -228,6 +230,10 @@ public extension NotificationView {
             break
         }
     }
+
+    func dismissTimerInvocation(timer: NSTimer) {
+        dismiss()
+    }
 }
 
 public extension NotificationView {
@@ -235,75 +241,91 @@ public extension NotificationView {
     public func show(animationDuration: NSTimeInterval = 0.5, completion: (() -> Void)? = nil) {
         func show() {
             switch position! {
+            case .Top, .Bottom:
+                alpha = 1
+                UIWindow.notificationWindow?.addSubview(self)
             case .NavBar(let navigationController):
-                let isNavBarHidden = navigationController.navigationBar.hidden || navigationController.navigationBarHidden
-                let isNavBarOpaque = !navigationController.navigationBar.translucent && navigationController.navigationBar.alpha == 1
-            default:
-                guard let notificationWindow = UIWindow.notificationWindow else {
-                    print("Show notification error: can not find a window to show notification")
-                    return
-                }
+                alpha = 0
+                navigationController.view.insertSubview(self, belowSubview: navigationController.navigationBar)
+            }
 
-                notificationWindow.addSubview(self)
-                guard let superview = superview else {
-                    return
-                }
+            guard let superview = superview else {
+                print("Show notification error: can not find a window to show notification")
+                return
+            }
 
-                let height = style! == .Simple ? NotificationLayout.simpleNotificationHeight : NotificationLayout.notificationHeight
-                superview.addConstraint(NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: height))
-                superview.addConstraint(NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .LessThanOrEqual, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: NotificationLayout.notificationMaxWidth))
-                superview.addConstraint(NSLayoutConstraint(item: self, attribute: .CenterX, relatedBy: .Equal, toItem: superview, attribute: .CenterX, multiplier: 1, constant: 0))
-                let leadingSpace = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: superview, attribute: .Leading, multiplier: 1, constant: NotificationLayout.notificationSpacing)
-                let trailingSpace = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: superview, attribute: .Trailing, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
-                leadingSpace.priority = UILayoutPriorityDefaultHigh
-                trailingSpace.priority = UILayoutPriorityDefaultHigh
-                superview.addConstraints([leadingSpace, trailingSpace])
+            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: NotificationLayout.notificationHeight))
+            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .LessThanOrEqual, toItem: .None, attribute: .NotAnAttribute, multiplier: 1, constant: NotificationLayout.notificationMaxWidth))
+            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .CenterX, relatedBy: .Equal, toItem: superview, attribute: .CenterX, multiplier: 1, constant: 0))
+            let leadingSpace = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: superview, attribute: .Leading, multiplier: 1, constant: NotificationLayout.notificationSpacing)
+            let trailingSpace = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: superview, attribute: .Trailing, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
+            leadingSpace.priority = UILayoutPriorityNotificationPadding
+            trailingSpace.priority = UILayoutPriorityNotificationPadding
+            superview.addConstraints([leadingSpace, trailingSpace])
 
-                let preparatoryVerticalConstraints: [NSLayoutConstraint] = {
-                    switch position! {
-                    case .Top:
-                        let topSpace = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: superview, attribute: .Top, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
-                        return [topSpace]
-                    case .Bottom:
-                        let bottomSpace = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: superview, attribute: .Bottom, multiplier: 1, constant: NotificationLayout.notificationSpacing)
-                        return [bottomSpace]
-                    default:
-                        return []
-                    }
-                }()
-                superview.addConstraints(preparatoryVerticalConstraints)
-                layoutIfNeeded()
-
-                NotificationView.delegate?.willShowNotificationView(self)
-                superview.removeConstraints(preparatoryVerticalConstraints)
-                verticalConstraints.removeAll()
+            let preparatoryVerticalConstraints: [NSLayoutConstraint] = {
                 switch position! {
                 case .Top:
-                    let topSpace = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: superview, attribute: .Top, multiplier: 1, constant: NotificationLayout.notificationSpacing)
-                    verticalConstraints = [topSpace]
+                    let topSpace = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: superview, attribute: .Top, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
+                    return [topSpace]
                 case .Bottom:
-                    let bottomSpace = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: superview, attribute: .Bottom, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
-                    verticalConstraints = [bottomSpace]
-                default:
-                    break
+                    let bottomSpace = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: superview, attribute: .Bottom, multiplier: 1, constant: NotificationLayout.notificationSpacing)
+                    return [bottomSpace]
+                case .NavBar(let navigationController):
+                    let isNavBarHidden = navigationController.navigationBar.hidden || navigationController.navigationBarHidden
+                    if isNavBarHidden {
+                        let topSpace = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: navigationController.view, attribute: .Top, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
+                        return [topSpace]
+                    } else {
+                        let topSpace = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: navigationController.navigationBar, attribute: .Bottom, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
+                        return [topSpace]
+                    }
                 }
-                superview.addConstraints(verticalConstraints)
+            }()
+            superview.addConstraints(preparatoryVerticalConstraints)
+            layoutIfNeeded()
 
-                isAnimating = true
-                NotificationView.sharedNotification = self
-                UIView.animateWithDuration(animationDuration, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.2, options: [.AllowAnimatedContent, .BeginFromCurrentState], animations: {
-                    self.layoutIfNeeded()
-                    }, completion: { (finished) in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.isAnimating = false
-                            NotificationView.delegate?.didShowNotificationView(self)
-
-                            if let completion = completion {
-                                completion()
-                            }
-                        })
-                })
+            NotificationView.delegate?.willShowNotificationView(self)
+            superview.removeConstraints(preparatoryVerticalConstraints)
+            verticalConstraints.removeAll()
+            switch position! {
+            case .Top:
+                let topSpace = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: superview, attribute: .Top, multiplier: 1, constant: NotificationLayout.notificationSpacing)
+                verticalConstraints = [topSpace]
+            case .Bottom:
+                let bottomSpace = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: superview, attribute: .Bottom, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
+                verticalConstraints = [bottomSpace]
+            case .NavBar(let navigationController):
+                let isNavBarHidden = navigationController.navigationBar.hidden || navigationController.navigationBarHidden
+                if isNavBarHidden {
+                    let topSpace = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: navigationController.view, attribute: .Top, multiplier: 1, constant: NotificationLayout.notificationSpacing)
+                    verticalConstraints = [topSpace]
+                } else {
+                    let topSpace = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: navigationController.navigationBar, attribute: .Bottom, multiplier: 1, constant: NotificationLayout.notificationSpacing)
+                    verticalConstraints = [topSpace]
+                }
             }
+            superview.addConstraints(verticalConstraints)
+
+            isAnimating = true
+            NotificationView.sharedNotification = self
+            UIView.animateWithDuration(animationDuration, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.2, options: [.AllowAnimatedContent, .BeginFromCurrentState], animations: {
+                switch self.position! {
+                case .NavBar(_): self.alpha = 1
+                default: break
+                }
+                self.layoutIfNeeded()
+                }, completion: { (finished) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.isAnimating = false
+                        self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(self.duration, target: self, selector: #selector(self.dismissTimerInvocation(_:)), userInfo: nil, repeats: false)
+                        NotificationView.delegate?.didShowNotificationView(self)
+
+                        if let completion = completion {
+                            completion()
+                        }
+                    })
+            })
         }
 
         let shouldShowNotification = NotificationView.delegate?.shouldShowNotificationView(self) ?? true
@@ -316,6 +338,8 @@ public extension NotificationView {
                 sharedNotification.isAnimating = false
                 sharedNotification.removeFromSuperview()
                 NotificationView.sharedNotification = nil
+                self.dismissTimer?.invalidate()
+                self.dismissTimer = nil
                 NotificationView.delegate?.didDismissNotificationView(sharedNotification)
                 show()
             } else {
@@ -334,8 +358,12 @@ public extension NotificationView {
             return
         }
 
+        guard let superview = superview else {
+            return
+        }
+
         NotificationView.delegate?.willDismissNotificationView(self)
-        superview?.removeConstraints(verticalConstraints)
+        superview.removeConstraints(verticalConstraints)
         verticalConstraints.removeAll()
         let destinationVerticalConstraints: [NSLayoutConstraint] = {
             switch position! {
@@ -345,20 +373,33 @@ public extension NotificationView {
             case .Bottom:
                 let bottomSpace = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: superview, attribute: .Bottom, multiplier: 1, constant: NotificationLayout.notificationSpacing)
                 return [bottomSpace]
-            default:
-                return []
+            case .NavBar(let navigationController):
+                let isNavBarHidden = navigationController.navigationBar.hidden || navigationController.navigationBarHidden
+                if isNavBarHidden {
+                    let topSpace = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: navigationController.view, attribute: .Top, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
+                    return [topSpace]
+                } else {
+                    let topSpace = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: navigationController.navigationBar, attribute: .Bottom, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
+                    return [topSpace]
+                }
             }
         }()
-        superview?.addConstraints(destinationVerticalConstraints)
+        superview.addConstraints(destinationVerticalConstraints)
 
         isAnimating = true
         UIView.animateWithDuration(animationDuration, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.2, options: [.AllowAnimatedContent, .BeginFromCurrentState], animations: {
+            switch self.position! {
+            case .NavBar(_): self.alpha = 0
+            default: break
+            }
             self.layoutIfNeeded()
             }) { (finished) in
                 dispatch_async(dispatch_get_main_queue(), {
                     self.isAnimating = false
                     self.removeFromSuperview()
                     NotificationView.sharedNotification = nil
+                    self.dismissTimer?.invalidate()
+                    self.dismissTimer = nil
                     NotificationView.delegate?.didDismissNotificationView(self)
 
                     if let completion = completion {
