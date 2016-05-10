@@ -150,7 +150,7 @@ extension NotificationView {
         switch accessoryType {
         case .None:
             break
-        case .DisclosureIndicator(let action):
+        case .DisclosureIndicator(_):
             tapAction = #selector(notificationViewDisclosureIndicatorTapped)
             let disclosureIndicator = UIImage(named: "disclosureIndicator", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil)
             let imageView = UIImageView(image: disclosureIndicator)
