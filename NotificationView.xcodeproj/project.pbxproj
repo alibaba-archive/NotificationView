@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		D31E1DC41CDF55DD000E5369 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31E1DC31CDF55DD000E5369 /* NotificationView.swift */; };
 		D3A487FE1CDF910C0005BA2F /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A487FD1CDF910C0005BA2F /* Style.swift */; };
-		D3A488001CDF9DFC0005BA2F /* Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A487FF1CDF9DFC0005BA2F /* Delegate.swift */; };
+		D3A488001CDF9DFC0005BA2F /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A487FF1CDF9DFC0005BA2F /* Protocols.swift */; };
 		D3AF1B501CE1B1B400B9527F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AF1B4F1CE1B1B400B9527F /* Notification.swift */; };
 		D3D2C3121CE036CD0005BEF8 /* NotificationView.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3D2C3111CE036CD0005BEF8 /* NotificationView.xcassets */; };
 		D3D2C3141CE039F80005BEF8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2C3131CE039F70005BEF8 /* Constants.swift */; };
@@ -21,7 +21,7 @@
 		D31E1DC31CDF55DD000E5369 /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		D31E1DC61CDF5613000E5369 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "NotificationView/Supporting Files/Info.plist"; sourceTree = "<group>"; };
 		D3A487FD1CDF910C0005BA2F /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
-		D3A487FF1CDF9DFC0005BA2F /* Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delegate.swift; sourceTree = "<group>"; };
+		D3A487FF1CDF9DFC0005BA2F /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		D3AF1B4F1CE1B1B400B9527F /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D3D2C3111CE036CD0005BEF8 /* NotificationView.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = NotificationView.xcassets; path = NotificationView/Resources/NotificationView.xcassets; sourceTree = "<group>"; };
 		D3D2C3131CE039F70005BEF8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 			children = (
 				D3AF1B4F1CE1B1B400B9527F /* Notification.swift */,
 				D3A487FD1CDF910C0005BA2F /* Style.swift */,
-				D3A487FF1CDF9DFC0005BA2F /* Delegate.swift */,
+				D3A487FF1CDF9DFC0005BA2F /* Protocols.swift */,
 				D3D2C3131CE039F70005BEF8 /* Constants.swift */,
 				D31E1DC31CDF55DD000E5369 /* NotificationView.swift */,
 				D3D2C3151CE0618B0005BEF8 /* UIWindow+Notification.swift */,
@@ -123,11 +123,12 @@
 		D31E1DAF1CDF5541000E5369 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Teambition;
 				TargetAttributes = {
 					D31E1DB71CDF5541000E5369 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -167,7 +168,7 @@
 				D31E1DC41CDF55DD000E5369 /* NotificationView.swift in Sources */,
 				D3D2C3161CE0618B0005BEF8 /* UIWindow+Notification.swift in Sources */,
 				D3AF1B501CE1B1B400B9527F /* Notification.swift in Sources */,
-				D3A488001CDF9DFC0005BA2F /* Delegate.swift in Sources */,
+				D3A488001CDF9DFC0005BA2F /* Protocols.swift in Sources */,
 				D3A487FE1CDF910C0005BA2F /* Style.swift in Sources */,
 				D3D2C3141CE039F80005BEF8 /* Constants.swift in Sources */,
 			);
@@ -190,8 +191,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -239,8 +242,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -260,6 +265,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -271,6 +277,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -282,6 +289,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -289,6 +297,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -299,6 +308,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Teambition.NotificationView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

@@ -15,87 +15,87 @@ github "teambition/NotificationView"
 Four default icon styles available, and custom icon is supported certainly.
 ```swift
 enum NotificationViewStyle {
-    case Success
-    case Error
-    case Message
-    case Warning
-    case Custom(UIImage?)
+    case success
+    case error
+    case message
+    case warning
+    case custom(UIImage?)
 }
 ```
 
 ##### Position
 ```swift
 enum NotificationViewPosition {
-    case Top
-    case Bottom
-    case NavBar(UINavigationController)
+    case top
+    case bottom
+    case navBar(UINavigationController)
 }
 ```
-For position ```NavBar```, an UINavigationController instance is needed for displaying the notification.
+For position ```navBar```, an UINavigationController instance is needed for displaying the notification.
 
 ##### Accessory Type
 ```swift
 enum NotificationViewAccessoryType {
-    case None
-    case DisclosureIndicator(() -> Void)
-    case Custom(UIView)
+    case none
+    case disclosureIndicator(() -> ())
+    case custom(UIView)
 }
 ```
-For accessory type ```DisclosureIndicator```, a disclosure indicator will be displayed in the right side of the notification, which indicates that tapping the notification triggers an action associated with the value of the ```accessoryType``` property.
+For accessory type ```disclosureIndicator```, a disclosure indicator will be displayed in the right side of the notification, which indicates that tapping the notification triggers an action associated with the value of the ```accessoryType``` property.
 
-For accessory type ```Custom```, the given associated view will be used for the right accessory view of notification.
+For accessory type ```custom```, the given associated view will be used for the right accessory view of notification.
 
 ##### Show Notification
 ```swift
-class func showNotification(position: NotificationView.NotificationViewPosition = default, style: NotificationView.NotificationViewStyle, title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default) { }
+static func showNotification(at position: NotificationViewPosition = default, style: NotificationViewStyle, title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
-class func showSuccess(position: NotificationView.NotificationViewPosition = default, title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default) { }
+static func showSuccess(at position: NotificationViewPosition = default, title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
-class func showError(position: NotificationView.NotificationViewPosition = default, title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default) { }
+static func showError(at position: NotificationViewPosition = default, title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
-class func showMessage(position: NotificationView.NotificationViewPosition = default, title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default) { }
+static func showMessage(at position: NotificationViewPosition = default, title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
-class func showWarning(position: NotificationView.NotificationViewPosition = default, title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default) { }
+static func showWarning(at position: NotificationViewPosition = default, title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 ```
 
-For position ```NavBar```, there is a convenient way to show notification, you can call these functions of ```UINavigationController```:
+For position ```navBar```, there is a convenient way to show notification, you can call these functions of ```UINavigationController```:
 ```swift
 extension UINavigationController {
-    func showNotification(style: NotificationView.NotificationViewStyle, title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default)
+    func showNotification(style: NotificationViewStyle, title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
-    func showSuccess(title title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default)
+    func showSuccess(title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
-    func showError(title title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default)
+    func showError(title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
-    func showMessage(title title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default)
+    func showMessage(title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
-    func showWarning(title title: String?, subtitle: String?, accessoryType: NotificationView.NotificationViewAccessoryType = default)
+    func showWarning(title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 }
 ```
 
 #####  Implement the delegate if needed
 ```swift
-func shouldShowNotificationView(notificationView: NotificationView) -> Bool {
+func shouldShowNotificationView(_ notificationView: NotificationView) -> Bool {
     // default is true
 }
 
-func willShowNotificationView(notificationView: NotificationView) {
+func willShowNotificationView(_ notificationView: NotificationView) {
     // do something
 }
 
-func didShowNotificationView(notificationView: NotificationView) {
+func didShowNotificationView(_ notificationView: NotificationView) {
     // do something
 }
 
-func shouldDismissNotificationView(notificationView: NotificationView) -> Bool {
+func shouldDismissNotificationView(_ notificationView: NotificationView) -> Bool {
     // default is true
 }
 
-func willDismissNotificationView(notificationView: NotificationView) {
+func willDismissNotificationView(_ notificationView: NotificationView) {
     // do something
 }
 
-func didDismissNotificationView(notificationView: NotificationView) {
+func didDismissNotificationView(_ notificationView: NotificationView) {
     // do something
 }
 ```

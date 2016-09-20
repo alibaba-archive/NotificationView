@@ -12,13 +12,13 @@ internal let UILayoutPriorityNotificationPadding: Float = 999
 
 internal struct Notification {
     static let cornerRadius: CGFloat = 4
-    static let shadowColor = UIColor.blackColor().CGColor
+    static let shadowColor = UIColor.black.cgColor
     static let shadowOffset = CGSize(width: 0, height: 4)
     static let shadowOpacity: Float = 0.5
     static let shadowRadius: CGFloat = 6
 
-    static let titleFont = UIFont.systemFontOfSize(16)
-    static let subtitleFont = UIFont.systemFontOfSize(12)
+    static let titleFont = UIFont.systemFont(ofSize: 16)
+    static let subtitleFont = UIFont.systemFont(ofSize: 12)
 }
 
 internal struct NotificationLayout {

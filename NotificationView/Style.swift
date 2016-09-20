@@ -9,21 +9,21 @@
 import UIKit
 
 public enum NotificationViewStyle {
-    case Success
-    case Error
-    case Message
-    case Warning
-    case Custom(UIImage?)
+    case success
+    case error
+    case message
+    case warning
+    case custom(UIImage?)
 }
 
 public enum NotificationViewPosition {
-    case Top
-    case Bottom
-    case NavBar(UINavigationController)
+    case top
+    case bottom
+    case navBar(UINavigationController)
 }
 
 public enum NotificationViewAccessoryType {
-    case None
-    case DisclosureIndicator(() -> Void)
-    case Custom(UIView)
+    case none
+    case disclosureIndicator(() -> ())
+    case custom(UIView)
 }

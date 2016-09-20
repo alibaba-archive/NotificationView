@@ -10,9 +10,9 @@ import UIKit
 
 internal extension UIWindow {
     static var notificationWindow: UIWindow? {
-        for window in UIApplication.sharedApplication().windows.reverse() {
-            let windowOnMainScreen = window.screen == UIScreen.mainScreen()
-            let windowIsVisible = !window.hidden && window.alpha > 0
+        for window in UIApplication.shared.windows.reversed() {
+            let windowOnMainScreen = window.screen == UIScreen.main
+            let windowIsVisible = !window.isHidden && window.alpha > 0
             let windowLevelNormal = window.windowLevel == UIWindowLevelNormal
 
             if windowOnMainScreen && windowIsVisible && windowLevelNormal {
