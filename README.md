@@ -10,6 +10,16 @@ Specify "NotificationView" in your ```Cartfile```:
 github "teambition/NotificationView"
 ```
 
+###CocoaPods
+Specify "NotificationView" in your ```Podfile```:
+```ruby 
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'NotificationView'
+```
+
 ###Usage
 ##### Style
 Four default icon styles available, and custom icon is supported certainly.
