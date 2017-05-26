@@ -1,17 +1,17 @@
-#NotificationView
+# NotificationView
 Easy to use and customizable messages/notifications for iOS applications.
 
 ![Example](Gif/NotificationViewExample.gif "NotificationViewExample")
 
-##How To Get Started
-###Carthage
+## How To Get Started
+### Carthage
 Specify "NotificationView" in your ```Cartfile```:
 ```ogdl 
 github "teambition/NotificationView"
 ```
 
-###Usage
-##### Style
+### Usage
+#### Style
 Four default icon styles available, and custom icon is supported certainly.
 ```swift
 enum NotificationViewStyle {
@@ -23,7 +23,7 @@ enum NotificationViewStyle {
 }
 ```
 
-##### Position
+#### Position
 ```swift
 enum NotificationViewPosition {
     case top
@@ -33,7 +33,7 @@ enum NotificationViewPosition {
 ```
 For position ```navBar```, an UINavigationController instance is needed for displaying the notification.
 
-##### Accessory Type
+#### Accessory Type
 ```swift
 enum NotificationViewAccessoryType {
     case none
@@ -45,7 +45,7 @@ For accessory type ```disclosureIndicator```, a disclosure indicator will be dis
 
 For accessory type ```custom```, the given associated view will be used for the right accessory view of notification.
 
-##### Show Notification
+#### Show Notification
 ```swift
 static func showNotification(at position: NotificationViewPosition = default, style: NotificationViewStyle, title: String?, subtitle: String?, accessoryType: NotificationViewAccessoryType = default) { }
 
@@ -73,7 +73,7 @@ extension UINavigationController {
 }
 ```
 
-#####  Implement the delegate if needed
+####  Implement the delegate if needed
 ```swift
 func shouldShowNotificationView(_ notificationView: NotificationView) -> Bool {
     // default is true
