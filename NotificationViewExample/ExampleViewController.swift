@@ -52,7 +52,7 @@ class ExampleViewController: UIViewController {
                                           accessoryType: accessoryType)
     }
 
-    func doneButtonTapped(_ sender: UIButton) {
+    @objc func doneButtonTapped(_ sender: UIButton) {
         let alert = UIAlertController(title: "Done button tapped!", message: nil, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alert.addAction(cancelAction)

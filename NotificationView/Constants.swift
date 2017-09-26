@@ -8,7 +8,9 @@
 
 import UIKit
 
-internal let UILayoutPriorityNotificationPadding: Float = 999
+internal extension UILayoutPriority {
+    static let notificationPadding = UILayoutPriority(999)
+}
 
 internal struct Notification {
     static let cornerRadius: CGFloat = 4

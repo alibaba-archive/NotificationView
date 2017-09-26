@@ -201,15 +201,15 @@ extension NotificationView {
         addGestureRecognizer(swipeGesture)
     }
 
-    func notificationViewTapped() {
+    @objc func notificationViewTapped() {
         dismiss()
     }
 
-    func notificationViewSwiped() {
+    @objc func notificationViewSwiped() {
         dismiss()
     }
 
-    func notificationViewDisclosureIndicatorTapped() {
+    @objc func notificationViewDisclosureIndicatorTapped() {
         switch accessoryType {
         case .disclosureIndicator(let action):
             action()
@@ -218,7 +218,7 @@ extension NotificationView {
         }
     }
 
-    func dismissTimerInvocation(_ timer: Timer) {
+    @objc func dismissTimerInvocation(_ timer: Timer) {
         dismiss()
     }
 }
@@ -246,8 +246,8 @@ public extension NotificationView {
             superview.addConstraint(NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: superview, attribute: .centerX, multiplier: 1, constant: 0))
             let leadingSpace = NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: superview, attribute: .leading, multiplier: 1, constant: NotificationLayout.notificationSpacing)
             let trailingSpace = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: superview, attribute: .trailing, multiplier: 1, constant: -NotificationLayout.notificationSpacing)
-            leadingSpace.priority = UILayoutPriorityNotificationPadding
-            trailingSpace.priority = UILayoutPriorityNotificationPadding
+            leadingSpace.priority = .notificationPadding
+            trailingSpace.priority = .notificationPadding
             superview.addConstraints([leadingSpace, trailingSpace])
 
             // Prepare for display
