@@ -271,10 +271,20 @@ public extension NotificationView {
 
             // Move to display position
             switch self.position! {
-            case .top, .navBar(_):
+            case .top:
+                if #available(iOS 11.0, *) {
+                    self.verticalPositionConstraint.constant = NotificationLayout.notificationSpacing + safeAreaInsets.top
+                } else {
+                    self.verticalPositionConstraint.constant = NotificationLayout.notificationSpacing
+                }
+            case .navBar(_):
                 self.verticalPositionConstraint.constant = NotificationLayout.notificationSpacing
             case .bottom:
-                self.verticalPositionConstraint.constant = -NotificationLayout.notificationSpacing
+                if #available(iOS 11.0, *) {
+                    self.verticalPositionConstraint.constant = -NotificationLayout.notificationSpacing - safeAreaInsets.bottom
+                } else {
+                    self.verticalPositionConstraint.constant = -NotificationLayout.notificationSpacing
+                }
             }
 
             isAnimating = true
