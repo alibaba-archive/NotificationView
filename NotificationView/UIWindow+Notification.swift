@@ -13,7 +13,7 @@ internal extension UIWindow {
         for window in UIApplication.shared.windows.reversed() {
             let windowOnMainScreen = window.screen == UIScreen.main
             let windowIsVisible = !window.isHidden && window.alpha > 0
-            let windowLevelNormal = window.windowLevel == UIWindowLevelNormal
+            let windowLevelNormal = window.windowLevel == .normal
 
             if windowOnMainScreen && windowIsVisible && windowLevelNormal {
                 return window

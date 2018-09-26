@@ -10,9 +10,9 @@ import UIKit
 
 open class NotificationView: UIView {
     // MARK: - Properties
-    open static var sharedNotification: NotificationView?
+    public static var sharedNotification: NotificationView?
 
-    open weak static var delegate: NotificationViewDelegate?
+    public weak static var delegate: NotificationViewDelegate?
     open var titleFont = Notification.titleFont {
         didSet {
             titleLabel.font = titleFont
@@ -53,7 +53,7 @@ open class NotificationView: UIView {
     fileprivate lazy var titleLabel: UILabel = { [unowned self] in
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.backgroundColor = UIColor.clear
+        titleLabel.backgroundColor = .clear
         titleLabel.textAlignment = .left
         titleLabel.font = self.titleFont
         titleLabel.textColor = self.titleTextColor
@@ -62,7 +62,7 @@ open class NotificationView: UIView {
     fileprivate lazy var subtitleLabel: UILabel = { [unowned self] in
         let subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.backgroundColor = UIColor.clear
+        subtitleLabel.backgroundColor = .clear
         subtitleLabel.textAlignment = .left
         subtitleLabel.font = self.subtitleFont
         subtitleLabel.textColor = self.subtitleTextColor
@@ -83,7 +83,7 @@ open class NotificationView: UIView {
                             title: String?,
                             subtitle: String?,
                             accessoryType: NotificationViewAccessoryType = .none) {
-        self.init(frame: CGRect.zero)
+        self.init(frame: .zero)
         self.position = position
         self.style = style
         self.title = title

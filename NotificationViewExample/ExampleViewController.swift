@@ -151,22 +151,22 @@ extension ExampleViewController: UITableViewDataSource, UITableViewDelegate {
                     self.present(alert, animated: true, completion: nil)
                 })
             case 2:
-                let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 90, height: 35)))
+                let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 90, height: 35)))
                 button.layer.cornerRadius = 6
                 button.backgroundColor = UIColor(red: 3 / 255, green: 169 / 255, blue: 244 / 255, alpha: 1)
                 button.setTitle("Done", for: .normal)
-                button.setTitleColor(UIColor.white, for: .normal)
+                button.setTitleColor(.white, for: .normal)
                 button.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
-                button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+                button.titleLabel?.font = .systemFont(ofSize: 16)
                 accessoryType = .custom(button)
             case 3:
-                let accessoryView = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 130, height: 35)))
-                accessoryView.backgroundColor = UIColor.cyan
+                let accessoryView = UILabel(frame: CGRect(origin: .zero, size: CGSize(width: 130, height: 35)))
+                accessoryView.backgroundColor = .cyan
                 accessoryView.layer.cornerRadius = 7
                 accessoryView.clipsToBounds = true
                 accessoryView.text = "Accessory View"
-                accessoryView.textColor = UIColor.red
-                accessoryView.font = UIFont.systemFont(ofSize: 15)
+                accessoryView.textColor = .red
+                accessoryView.font = .systemFont(ofSize: 15)
                 accessoryView.textAlignment = .center
                 accessoryType = .custom(accessoryView)
             default:
