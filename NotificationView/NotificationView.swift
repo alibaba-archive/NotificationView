@@ -225,7 +225,7 @@ extension NotificationView {
 
 public extension NotificationView {
     // MARK: - Life cycle
-    public func show(withDuration duration: TimeInterval = 0.5, completion: (() -> ())? = nil) {
+    func show(withDuration duration: TimeInterval = 0.5, completion: (() -> ())? = nil) {
         func show() {
             switch position! {
             case .top, .bottom:
@@ -330,7 +330,7 @@ public extension NotificationView {
         }
     }
 
-    public func dismiss(withDuration duration: TimeInterval = 0.4, completion: (() -> ())? = nil) {
+    func dismiss(withDuration duration: TimeInterval = 0.4, completion: (() -> ())? = nil) {
         let shouldDismissNotification = NotificationView.delegate?.shouldDismissNotificationView(self) ?? true
         guard shouldDismissNotification else {
             return

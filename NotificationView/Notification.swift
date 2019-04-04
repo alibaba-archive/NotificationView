@@ -9,11 +9,11 @@
 import UIKit
 
 public extension NotificationView {
-    public static func showNotification(at position: NotificationViewPosition = .top,
-                                        style: NotificationViewStyle,
-                                        title: String?,
-                                        subtitle: String?,
-                                        accessoryType: NotificationViewAccessoryType = .none) {
+    static func showNotification(at position: NotificationViewPosition = .top,
+                                 style: NotificationViewStyle,
+                                 title: String?,
+                                 subtitle: String?,
+                                 accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: position,
                                                 style: style,
                                                 title: title,
@@ -22,10 +22,10 @@ public extension NotificationView {
         notificationView.show()
     }
 
-    public static func showSuccess(at position: NotificationViewPosition = .top,
-                                   title: String?,
-                                   subtitle: String?,
-                                   accessoryType: NotificationViewAccessoryType = .none) {
+    static func showSuccess(at position: NotificationViewPosition = .top,
+                            title: String?,
+                            subtitle: String?,
+                            accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: position,
                                                 style: .success,
                                                 title: title,
@@ -34,10 +34,10 @@ public extension NotificationView {
         notificationView.show()
     }
 
-    public static func showError(at position: NotificationViewPosition = .top,
-                                 title: String?,
-                                 subtitle: String?,
-                                 accessoryType: NotificationViewAccessoryType = .none) {
+    static func showError(at position: NotificationViewPosition = .top,
+                          title: String?,
+                          subtitle: String?,
+                          accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: position,
                                                 style: .error,
                                                 title: title,
@@ -46,10 +46,10 @@ public extension NotificationView {
         notificationView.show()
     }
 
-    public static func showMessage(at position: NotificationViewPosition = .top,
-                                   title: String?,
-                                   subtitle: String?,
-                                   accessoryType: NotificationViewAccessoryType = .none) {
+    static func showMessage(at position: NotificationViewPosition = .top,
+                            title: String?,
+                            subtitle: String?,
+                            accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: position,
                                                 style: .message,
                                                 title: title,
@@ -58,10 +58,10 @@ public extension NotificationView {
         notificationView.show()
     }
 
-    public static func showWarning(at position: NotificationViewPosition = .top,
-                                   title: String?,
-                                   subtitle: String?,
-                                   accessoryType: NotificationViewAccessoryType = .none) {
+    static func showWarning(at position: NotificationViewPosition = .top,
+                            title: String?,
+                            subtitle: String?,
+                            accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: position,
                                                 style: .warning,
                                                 title: title,
@@ -72,10 +72,10 @@ public extension NotificationView {
 }
 
 public extension UINavigationController {
-    public func showNotification(style: NotificationViewStyle,
-                                 title: String?,
-                                 subtitle: String?,
-                                 accessoryType: NotificationViewAccessoryType = .none) {
+    func showNotification(style: NotificationViewStyle,
+                          title: String?,
+                          subtitle: String?,
+                          accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: .navBar(self),
                                                 style: style,
                                                 title: title,
@@ -84,9 +84,9 @@ public extension UINavigationController {
         notificationView.show()
     }
 
-    public func showSuccess(title: String?,
-                            subtitle: String?,
-                            accessoryType: NotificationViewAccessoryType = .none) {
+    func showSuccess(title: String?,
+                     subtitle: String?,
+                     accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: .navBar(self),
                                                 style: .success,
                                                 title: title,
@@ -95,9 +95,9 @@ public extension UINavigationController {
         notificationView.show()
     }
 
-    public func showError(title: String?,
-                          subtitle: String?,
-                          accessoryType: NotificationViewAccessoryType = .none) {
+    func showError(title: String?,
+                   subtitle: String?,
+                   accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: .navBar(self),
                                                 style: .error,
                                                 title: title,
@@ -106,9 +106,9 @@ public extension UINavigationController {
         notificationView.show()
     }
 
-    public func showMessage(title: String?,
-                            subtitle: String?,
-                            accessoryType: NotificationViewAccessoryType = .none) {
+    func showMessage(title: String?,
+                     subtitle: String?,
+                     accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: .navBar(self),
                                                 style: .message,
                                                 title: title,
@@ -117,9 +117,9 @@ public extension UINavigationController {
         notificationView.show()
     }
 
-    public func showWarning(title: String?,
-                            subtitle: String?,
-                            accessoryType: NotificationViewAccessoryType = .none) {
+    func showWarning(title: String?,
+                     subtitle: String?,
+                     accessoryType: NotificationViewAccessoryType = .none) {
         let notificationView = NotificationView(position: .navBar(self),
                                                 style: .warning,
                                                 title: title,
