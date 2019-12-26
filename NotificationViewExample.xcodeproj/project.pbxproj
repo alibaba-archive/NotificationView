@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C410B7F723B496A200389F53 /* NotificationView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C410B7F623B496A200389F53 /* NotificationView.framework */; };
 		D31E1D9D1CDF54AD000E5369 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31E1D9C1CDF54AD000E5369 /* AppDelegate.swift */; };
 		D31E1D9F1CDF54AD000E5369 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31E1D9E1CDF54AD000E5369 /* ExampleViewController.swift */; };
 		D31E1DA21CDF54AD000E5369 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D31E1DA01CDF54AD000E5369 /* Main.storyboard */; };
 		D31E1DA41CDF54AD000E5369 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D31E1DA31CDF54AD000E5369 /* Assets.xcassets */; };
-		D31E1DC91CDF56C0000E5369 /* NotificationView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31E1DC81CDF56C0000E5369 /* NotificationView.framework */; };
-		D31E1DCA1CDF56C0000E5369 /* NotificationView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D31E1DC81CDF56C0000E5369 /* NotificationView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,7 +21,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D31E1DCA1CDF56C0000E5369 /* NotificationView.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -30,13 +28,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C410B7F623B496A200389F53 /* NotificationView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NotificationView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D31E1D991CDF54AC000E5369 /* NotificationViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotificationViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D31E1D9C1CDF54AD000E5369 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D31E1D9E1CDF54AD000E5369 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		D31E1DA11CDF54AD000E5369 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D31E1DA31CDF54AD000E5369 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D31E1DA81CDF54AD000E5369 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D31E1DC81CDF56C0000E5369 /* NotificationView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = NotificationView.framework; path = "/Users/hongxin/Library/Developer/Xcode/DerivedData/NotificationView-ahsldchmdqxbmgaeoiecxsyckqam/Build/Products/Debug-iphoneos/NotificationView.framework"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,19 +42,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D31E1DC91CDF56C0000E5369 /* NotificationView.framework in Frameworks */,
+				C410B7F723B496A200389F53 /* NotificationView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C410B7F523B496A200389F53 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C410B7F623B496A200389F53 /* NotificationView.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D31E1D901CDF54AC000E5369 = {
 			isa = PBXGroup;
 			children = (
-				D31E1DC81CDF56C0000E5369 /* NotificationView.framework */,
 				D31E1D9B1CDF54AD000E5369 /* NotificationViewExample */,
 				D31E1D9A1CDF54AC000E5369 /* Products */,
+				C410B7F523B496A200389F53 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
