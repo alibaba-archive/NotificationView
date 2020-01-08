@@ -66,6 +66,7 @@ open class NotificationView: UIView {
         subtitleLabel.textAlignment = .left
         subtitleLabel.font = self.subtitleFont
         subtitleLabel.textColor = self.subtitleTextColor
+        subtitleLabel.numberOfLines = 2
         return subtitleLabel
     }()
 
@@ -221,6 +222,13 @@ extension NotificationView {
     @objc func dismissTimerInvocation(_ timer: Timer) {
         dismiss()
     }
+    
+    private var viewHeight: CGFloat {
+        if let subtitle = self.subtitle {
+            return subtitle.boundingRect(with: CGSize(width: NotificationLayout.notificationMaxWidth, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: self.subtitleFont], context: nil).height > 15 ? NotificationLayout.notificationMaxHeight : NotificationLayout.notificationHeight
+        }
+        return NotificationLayout.notificationHeight
+    }
 }
 
 public extension NotificationView {
@@ -241,7 +249,7 @@ public extension NotificationView {
                 return
             }
 
-            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: NotificationLayout.notificationHeight))
+            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: viewHeight))
             superview.addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .lessThanOrEqual, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: NotificationLayout.notificationMaxWidth))
             superview.addConstraint(NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: superview, attribute: .centerX, multiplier: 1, constant: 0))
             let leadingSpace = NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: superview, attribute: .leading, multiplier: 1, constant: NotificationLayout.notificationSpacing)
@@ -253,15 +261,15 @@ public extension NotificationView {
             // Prepare for display
             switch position! {
             case .top:
-                verticalPositionConstraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: superview, attribute: .top, multiplier: 1, constant: -(NotificationLayout.notificationSpacing + NotificationLayout.notificationHeight))
+                verticalPositionConstraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: superview, attribute: .top, multiplier: 1, constant: -(NotificationLayout.notificationSpacing + viewHeight))
             case .bottom:
-                verticalPositionConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: superview, attribute: .bottom, multiplier: 1, constant: NotificationLayout.notificationSpacing + NotificationLayout.notificationHeight)
+                verticalPositionConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: superview, attribute: .bottom, multiplier: 1, constant: NotificationLayout.notificationSpacing + viewHeight)
             case .navBar(let navigationController):
                 let isNavBarHidden = navigationController.navigationBar.isHidden || navigationController.isNavigationBarHidden
                 if isNavBarHidden {
-                    verticalPositionConstraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: navigationController.view, attribute: .top, multiplier: 1, constant: -(NotificationLayout.notificationSpacing + NotificationLayout.notificationHeight))
+                    verticalPositionConstraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: navigationController.view, attribute: .top, multiplier: 1, constant: -(NotificationLayout.notificationSpacing + viewHeight))
                 } else {
-                    verticalPositionConstraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: navigationController.navigationBar, attribute: .bottom, multiplier: 1, constant: -(NotificationLayout.notificationSpacing + NotificationLayout.notificationHeight))
+                    verticalPositionConstraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: navigationController.navigationBar, attribute: .bottom, multiplier: 1, constant: -(NotificationLayout.notificationSpacing + viewHeight))
                 }
             }
             superview.addConstraint(verticalPositionConstraint)
@@ -345,9 +353,9 @@ public extension NotificationView {
         // Move to dismiss position
         switch position! {
         case .top, .navBar(_):
-            verticalPositionConstraint.constant = -(NotificationLayout.notificationSpacing + NotificationLayout.notificationHeight)
+            verticalPositionConstraint.constant = -(NotificationLayout.notificationSpacing + viewHeight)
         case .bottom:
-            verticalPositionConstraint.constant = NotificationLayout.notificationSpacing + NotificationLayout.notificationHeight
+            verticalPositionConstraint.constant = NotificationLayout.notificationSpacing + viewHeight
         }
 
         isAnimating = true

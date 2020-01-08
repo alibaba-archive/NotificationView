@@ -26,6 +26,7 @@ internal struct Notification {
 internal struct NotificationLayout {
     static let notificationSpacing: CGFloat = 10
     static let notificationHeight: CGFloat = 60
+    static let notificationMaxHeight: CGFloat = 75
     static let notificationMaxWidth: CGFloat = 500
 
     static let iconSize = CGSize(width: 36, height: 36)
