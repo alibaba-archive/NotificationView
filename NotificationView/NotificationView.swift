@@ -225,7 +225,8 @@ extension NotificationView {
     
     private var viewHeight: CGFloat {
         if let subtitle = self.subtitle {
-            return subtitle.boundingRect(with: CGSize(width: NotificationLayout.notificationMaxWidth, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: self.subtitleFont], context: nil).height > 15 ? NotificationLayout.notificationMaxHeight : NotificationLayout.notificationHeight
+            let subTitleMaxWidth = min(NotificationLayout.notificationMaxWidth, UIScreen.main.bounds.width - 2 * NotificationLayout.labelVerticalPadding)
+            return subtitle.boundingRect(with: CGSize(width: subTitleMaxWidth, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: self.subtitleFont], context: nil).height > 15 ? NotificationLayout.notificationMaxHeight : NotificationLayout.notificationHeight
         }
         return NotificationLayout.notificationHeight
     }
