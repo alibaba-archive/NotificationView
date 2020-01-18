@@ -140,6 +140,8 @@ extension NotificationView {
             addSubview(subtitleLabel)
 
             addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: NotificationLayout.labelVerticalPadding))
+            
+            addConstraint(NSLayoutConstraint(item: subtitleLabel, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1, constant: NotificationLayout.labelVerticalPadding/2))
             addConstraint(NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: subtitleLabel, attribute: .bottom, multiplier: 1, constant: NotificationLayout.labelVerticalPadding))
             addConstraint(NSLayoutConstraint(item: subtitleLabel, attribute: .leading, relatedBy: .equal, toItem: titleLabel, attribute: .leading, multiplier: 1, constant: 0))
             addConstraint(NSLayoutConstraint(item: subtitleLabel, attribute: .trailing, relatedBy: .equal, toItem: titleLabel, attribute: .trailing, multiplier: 1, constant: 0))
@@ -225,8 +227,7 @@ extension NotificationView {
     
     private var viewHeight: CGFloat {
         if let subtitle = self.subtitle {
-            let subTitleMaxWidth = min(NotificationLayout.notificationMaxWidth, UIScreen.main.bounds.width - 2 * NotificationLayout.labelVerticalPadding)
-            return subtitle.boundingRect(with: CGSize(width: subTitleMaxWidth, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [.font: self.subtitleFont], context: nil).height > 15 ? NotificationLayout.notificationMaxHeight : NotificationLayout.notificationHeight
+            return NotificationLayout.notificationMaxHeight
         }
         return NotificationLayout.notificationHeight
     }
@@ -250,7 +251,7 @@ public extension NotificationView {
                 return
             }
 
-            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: viewHeight))
+            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .lessThanOrEqual, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: viewHeight))
             superview.addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .lessThanOrEqual, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: NotificationLayout.notificationMaxWidth))
             superview.addConstraint(NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: superview, attribute: .centerX, multiplier: 1, constant: 0))
             let leadingSpace = NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: superview, attribute: .leading, multiplier: 1, constant: NotificationLayout.notificationSpacing)

@@ -43,8 +43,8 @@ class ExampleViewController: UIViewController {
     // MARK: - Actions
     @IBAction func showNotificationButtonTapped(_ sender: UIButton) {
         notificationCount += 1
-        let title = "Show notification \(notificationCount) successfully! You can tap the notification to dismiss."
-        let subtitle = "You can tap the notification to dismiss."
+        let title = "指派成功"
+        let subtitle = "需求已迁移到项目 「Server」"
         NotificationView.showNotification(at: position,
                                           style: style,
                                           title: title,
