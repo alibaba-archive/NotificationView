@@ -226,7 +226,7 @@ extension NotificationView {
     }
     
     private var viewHeight: CGFloat {
-        if let subtitle = self.subtitle {
+        if self.subtitle != nil {
             return NotificationLayout.notificationMaxHeight
         }
         return NotificationLayout.notificationHeight
@@ -251,7 +251,9 @@ public extension NotificationView {
                 return
             }
 
-            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .lessThanOrEqual, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: viewHeight))
+            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .lessThanOrEqual, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: NotificationLayout.notificationMaxHeight))
+            superview.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: NotificationLayout.notificationHeight))
+            
             superview.addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .lessThanOrEqual, toItem: .none, attribute: .notAnAttribute, multiplier: 1, constant: NotificationLayout.notificationMaxWidth))
             superview.addConstraint(NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: superview, attribute: .centerX, multiplier: 1, constant: 0))
             let leadingSpace = NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: superview, attribute: .leading, multiplier: 1, constant: NotificationLayout.notificationSpacing)
