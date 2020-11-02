@@ -5,7 +5,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TBNotificationView'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Easy to use and customizable messages/notifications for iOS applications.'
   s.description      = <<-DESC
   Easy to use and customizable messages/notifications for iOS applications..
